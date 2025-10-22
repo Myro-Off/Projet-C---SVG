@@ -143,7 +143,7 @@ typedef enum {
  * @brief Type de segment composant un chemin SVG.
  */
 typedef enum {
-    SEGMENT_MOVE,              /**< M/m : Déplacement du curseur. */
+    SEGMENT_MOVE = 1,          /**< M/m : Déplacement du curseur. */
     SEGMENT_LINE,              /**< L/l : Ligne droite. */
     SEGMENT_HORIZONTAL,        /**< H/h : Ligne horizontale. */
     SEGMENT_VERTICAL,          /**< V/v : Ligne verticale. */

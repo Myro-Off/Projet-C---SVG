@@ -38,28 +38,27 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
                 if (y2 > *ymax) *ymax = y2;
                 break;
             }
+
             case SQUARE: {
-                int x1 = current->data.square->x;
-                int y1 = current->data.square->y;
-                int x2 = x1 + current->data.square->side;
-                int y2 = y1 + current->data.square->side;
-                if (x1 < *xmin) *xmin = x1;
-                if (y1 < *ymin) *ymin = y1;
+                int x2 = current->data.square->x + current->data.square->side;
+                int y2 = current->data.square->y + current->data.square->side;
+                if (current->data.square->x < *xmin) *xmin = current->data.square->x;
+                if (current->data.square->y < *ymin) *ymin = current->data.square->y;
                 if (x2 > *xmax) *xmax = x2;
                 if (y2 > *ymax) *ymax = y2;
                 break;
             }
+
             case RECTANGLE: {
-                int x1 = current->data.rectangle->x;
-                int y1 = current->data.rectangle->y;
-                int x2 = x1 + current->data.rectangle->width;
-                int y2 = y1 + current->data.rectangle->height;
-                if (x1 < *xmin) *xmin = x1;
-                if (y1 < *ymin) *ymin = y1;
+                int x2 = current->data.rectangle->x + current->data.rectangle->width;
+                int y2 = current->data.rectangle->y + current->data.rectangle->height;
+                if (current->data.rectangle->x < *xmin) *xmin = current->data.rectangle->x;
+                if (current->data.rectangle->y < *ymin) *ymin = current->data.rectangle->y;
                 if (x2 > *xmax) *xmax = x2;
                 if (y2 > *ymax) *ymax = y2;
                 break;
             }
+
             case LINE: {
                 int x1 = current->data.line->x1;
                 int y1 = current->data.line->y1;
@@ -71,6 +70,7 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
                 if (y2 > *ymax) *ymax = y2;
                 break;
             }
+
             case ELLIPSE: {
                 int x1 = current->data.ellipse->x - current->data.ellipse->radiusx;
                 int y1 = current->data.ellipse->y - current->data.ellipse->radiusy;
@@ -82,6 +82,7 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
                 if (y2 > *ymax) *ymax = y2;
                 break;
             }
+
             case POLYGON: {
                 for (int i = 0; i < current->data.polygon->nb_points; i++) {
                     int x = current->data.polygon->points[i].x;
@@ -93,6 +94,7 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
                 }
                 break;
             }
+
             case MULTILINE: {
                 for (int i = 0; i < current->data.multiline->nb_points; i++) {
                     int x = current->data.multiline->points[i].x;
@@ -131,27 +133,61 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
                     } 
                     else if (p.type == SEGMENT_HORIZONTAL) {
                         if (p.x < *xmin) *xmin = p.x;
-                        if (p.x > *xmax) *xmax = p.x;
-                    }
-                    else if (p.type == SEGMENT_VERTICAL) {
                         if (p.y < *ymin) *ymin = p.y;
+                        if (p.x > *xmax) *xmax = p.x;
                         if (p.y > *ymax) *ymax = p.y;
+                    }
+
+                    // Contrôles pour les Béziers
+                    if (p.type == SEGMENT_QUADRATIC_BEZIER || p.type == SEGMENT_SMOOTH_QUADRATIC) {
+                        if (p.control1.x < *xmin) *xmin = p.control1.x;
+                        if (p.control1.y < *ymin) *ymin = p.control1.y;
+                        if (p.control1.x > *xmax) *xmax = p.control1.x;
+                        if (p.control1.y > *ymax) *ymax = p.control1.y;
+                    }
+
+                    if (p.type == SEGMENT_CUBIC_BEZIER || p.type == SEGMENT_SMOOTH_CUBIC) {
+                        if (p.control1.x < *xmin) *xmin = p.control1.x;
+                        if (p.control1.y < *ymin) *ymin = p.control1.y;
+                        if (p.control1.x > *xmax) *xmax = p.control1.x;
+                        if (p.control1.y > *ymax) *ymax = p.control1.y;
+
+                        if (p.control2.x < *xmin) *xmin = p.control2.x;
+                        if (p.control2.y < *ymin) *ymin = p.control2.y;
+                        if (p.control2.x > *xmax) *xmax = p.control2.x;
+                        if (p.control2.y > *ymax) *ymax = p.control2.y;
+                    }
+
+                    // Pour les arcs : rayon + rotation
+                    if (p.type == SEGMENT_ARC) {
+                        int rx = abs(p.radiusX);
+                        int ry = abs(p.radiusY);
+                        int x1 = p.x - rx;
+                        int y1 = p.y - ry;
+                        int x2 = p.x + rx;
+                        int y2 = p.y + ry;
+                        if (x1 < *xmin) *xmin = x1;
+                        if (y1 < *ymin) *ymin = y1;
+                        if (x2 > *xmax) *xmax = x2;
+                        if (y2 > *ymax) *ymax = y2;
                     }
                 }
                 break;
             }
+
             default: break;
         }
+
         current = current->next;
     }
 
-    // Ajouter une marge
+    // Marges pour éviter le clipping
     *xmin -= 10;
     *ymin -= 10;
     *xmax += 10;
     *ymax += 10;
 
-    // Assurer la taille minimum
+    // Taille minimale du canvas
     if (*xmin > 0) *xmin = 0;
     if (*ymin > 0) *ymin = 0;
     if (*xmax < 800) *xmax = 800;
@@ -218,6 +254,9 @@ void export_svg_path(FILE* f, const Path* p) {
 
     fprintf(f, "    <path d='");
 
+    int current_x = 0, current_y = 0;
+    int has_started = 0;
+
     for (int i = 0; i < p->nb_points; i++) {
         PathPoint current_point = p->points[i];
         char command;
@@ -228,21 +267,29 @@ void export_svg_path(FILE* f, const Path* p) {
              strcpy(format_str, " %c");
         }
 
-        switch (current_point.type) {
+        switch (cp.type) {
             case SEGMENT_MOVE:
-                command = 'M';
-                if (current_point.coord_type == COORD_RELATIVE) command = 'm';
-                fprintf(f, format_str, command);
-                fprintf(f, "%d %d", current_point.x, current_point.y);
+                command = (cp.coord_type == COORD_RELATIVE) ? 'm' : 'M';
+                fprintf(f, "%c%d %d", command, cp.x, cp.y);
+                current_x = (cp.coord_type == COORD_RELATIVE) ? current_x + cp.x : cp.x;
+                current_y = (cp.coord_type == COORD_RELATIVE) ? current_y + cp.y : cp.y;
+                has_started = 1;
                 break;
-                
+
             case SEGMENT_LINE:
-                command = 'L';
-                if (current_point.coord_type == COORD_RELATIVE) command = 'l';
-                fprintf(f, format_str, command);
-                fprintf(f, "%d %d", current_point.x, current_point.y);
+                if (!has_started) {
+                    fprintf(f, "M%d %d", cp.x, cp.y);
+                    current_x = cp.x;
+                    current_y = cp.y;
+                    has_started = 1;
+                } else {
+                    command = (cp.coord_type == COORD_RELATIVE) ? 'l' : 'L';
+                    fprintf(f, "%c%d %d", command, cp.x, cp.y);
+                    current_x = (cp.coord_type == COORD_RELATIVE) ? current_x + cp.x : cp.x;
+                    current_y = (cp.coord_type == COORD_RELATIVE) ? current_y + cp.y : cp.y;
+                }
                 break;
-                
+
             case SEGMENT_HORIZONTAL:
                 command = 'H';
                 if (current_point.coord_type == COORD_RELATIVE) command = 'h';
@@ -258,15 +305,14 @@ void export_svg_path(FILE* f, const Path* p) {
                 break;
 
             case SEGMENT_QUADRATIC_BEZIER:
-                command = 'Q';
-                if (current_point.coord_type == COORD_RELATIVE) command = 'q';
-                fprintf(f, format_str, command);
-                // Q cx cy, x y
-                fprintf(f, "%d %d, %d %d", 
-                    current_point.control1.x, current_point.control1.y,
-                    current_point.x, current_point.y);
+                command = (cp.coord_type == COORD_RELATIVE) ? 'q' : 'Q';
+                fprintf(f, "%c%d %d, %d %d", command,
+                        cp.control1.x, cp.control1.y,
+                        cp.x, cp.y);
+                current_x = (cp.coord_type == COORD_RELATIVE) ? current_x + cp.x : cp.x;
+                current_y = (cp.coord_type == COORD_RELATIVE) ? current_y + cp.y : cp.y;
                 break;
-                
+
             case SEGMENT_CUBIC_BEZIER:
                 command = 'C';
                 if (current_point.coord_type == COORD_RELATIVE) command = 'c';
@@ -276,15 +322,14 @@ void export_svg_path(FILE* f, const Path* p) {
                     current_point.control2.x, current_point.control2.y,
                     current_point.x, current_point.y);
                 break;
-                
+
             case SEGMENT_SMOOTH_QUADRATIC:
-                command = 'T';
-                if (current_point.coord_type == COORD_RELATIVE) command = 't';
-                fprintf(f, format_str, command);
-                // T x y
-                fprintf(f, "%d %d", current_point.x, current_point.y);
+                command = (cp.coord_type == COORD_RELATIVE) ? 't' : 'T';
+                fprintf(f, "%c%d %d", command, cp.x, cp.y);
+                current_x = (cp.coord_type == COORD_RELATIVE) ? current_x + cp.x : cp.x;
+                current_y = (cp.coord_type == COORD_RELATIVE) ? current_y + cp.y : cp.y;
                 break;
-                
+
             case SEGMENT_SMOOTH_CUBIC:
                 command = 'S';
                 if (current_point.coord_type == COORD_RELATIVE) command = 's';
@@ -293,7 +338,7 @@ void export_svg_path(FILE* f, const Path* p) {
                     current_point.control2.x, current_point.control2.y,
                     current_point.x, current_point.y);
                 break;
-                
+
             case SEGMENT_ARC:
                 command = 'A';
                 if (current_point.coord_type == COORD_RELATIVE) command = 'a';
@@ -305,7 +350,7 @@ void export_svg_path(FILE* f, const Path* p) {
                     current_point.sweepFlag ? 1 : 0, 
                     current_point.x, current_point.y);
                 break;
-                
+
             case SEGMENT_CLOSE:
                 command = 'Z';
                 if (current_point.coord_type == COORD_RELATIVE) command = 'z';
@@ -313,41 +358,30 @@ void export_svg_path(FILE* f, const Path* p) {
                 break;
         }
     }
-    
-    fprintf(f, 
-        "' fill='%s' stroke='%s' stroke-width='%d' transform='scale(%d, %d)'/>\n",
-        p->fill_color, p->stroke_color, p->thickness, p->scalex, p->scaley
-    );
+
+    fprintf(f, "' fill='%s' stroke='%s' stroke-width='%d' transform='scale(%d, %d)'/>\n",
+            p->fill_color, p->stroke_color, p->thickness, p->scalex, p->scaley);
 }
 
 void export_svg_all(const char* filename, ShapeList* list) {
     if (!list || list->size == 0) {
-        move_cursor(19, 37);
-        printf(ORANGE"╭────────────────────────────────────────╮");
-        move_cursor(20, 35);
-        printf(    "->│ Please create a shape before exporting │");
-        move_cursor(21, 37);
-        printf(      "╰────────────────────────────────────────╯");
+        move_cursor(19, 37); printf(ORANGE"╭────────────────────────────────────────╮");
+        move_cursor(20, 35); printf(    "->│ Please create a shape before exporting │");
+        move_cursor(21, 37); printf(      "╰────────────────────────────────────────╯");
         temp_message("", 0, 2);
             return;
         }
     system("rm Export/export.svg");
 
-    move_cursor(19, 37);
-    printf(ORANGE"╭─────────────────────────────────────────────╮");
-    move_cursor(20, 35);
-    printf(    "->│                                             │");
-    move_cursor(21, 37);
-    printf(      "╰─────────────────────────────────────────────╯");
+    move_cursor(19, 37); printf(ORANGE"╭─────────────────────────────────────────╮");
+    move_cursor(20, 35); printf(    "->│                                         │");
+    move_cursor(21, 37); printf(      "╰─────────────────────────────────────────╯");
 
     FILE* f = fopen(filename, "w");
     if (!f) {
-        move_cursor(19, 37);
-        printf(ORANGE"╭─────────────────────────╮");
-        move_cursor(20, 35);
-        printf(    "->│ Error creating SVG file │");
-        move_cursor(21, 37);
-        printf(      "╰─────────────────────────╯");
+        move_cursor(19, 37); printf(ORANGE"╭─────────────────────────╮");
+        move_cursor(20, 35); printf(    "->│ Error creating SVG file │");
+        move_cursor(21, 37); printf(      "╰─────────────────────────╯");
         temp_message("", 0, 2);
         return;
     }
@@ -385,11 +419,8 @@ void export_svg_all(const char* filename, ShapeList* list) {
         draw_progress(frac);
         usleep(60000);
     }
-    move_cursor(19, 37);
-    printf(GREEN"╭─────────────────────────────────────────────╮");
-    move_cursor(20, 35);
-    printf(   "->│ SVG export completed -> %s │", filename);
-    move_cursor(21, 37);
-    printf(     "╰─────────────────────────────────────────────╯");
+    move_cursor(19, 37); printf(GREEN"╭─────────────────────────────────────────────╮");
+    move_cursor(20, 35); printf(   "->│ SVG export completed -> %s │", filename);
+    move_cursor(21, 37); printf(     "╰─────────────────────────────────────────────╯");
     temp_message("", 0, 3);
 }

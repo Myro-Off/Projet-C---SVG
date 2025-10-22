@@ -303,17 +303,51 @@ void ask_path(ShapeList* list) {
     if (!points) return;
 
     printf(BLUE"\n---- Point 1 (Start of Path - M/m) ----\n"RESET);
-    if (!ask_integer((int*)&points[0].coord_type, "• Coordinate Type (1=Absolute, 2=Relative): ", 1, 1, 2, false)) { free(points); return; }
+    printf(WHITE
+    "╭────────────────────────────────────────╮\n"
+    "│ "RESET"Coordinate Type:                       "WHITE"│\n"
+    "│                                        "WHITE"│\n"
+    "│ "RESET"1 = Absolute                           "WHITE"│\n"
+    "│ "RESET"2 = Relative                           "WHITE"│\n"
+    "╰────────────────────────────────────────╯\n"RESET);
+    if (!ask_integer((int*)&points[0].coord_type, "• Coordinate Type: ", 1, 1, 2, false)) { free(points); return; }
     points[0].type = SEGMENT_MOVE;
     if (!ask_integer(&points[0].x, "• X: ", 3, 0, 9, true)) { free(points); return; }
     if (!ask_integer(&points[0].y, "• Y: ", 3, 0, 9, true)) { free(points); return; }
 
     for (int i = 1; i < nb_points; i++) {
-        printf(BLUE"\n---- Segment %d ----\n"RESET, i);
-        if (!ask_integer((int*)&points[i].coord_type, "• Coordinate Type (1=Absolute, 2=Relative): ", 1, 1, 2, false)) { free(points); return; }
-        if (!ask_integer((int*)&points[i].type, "• Segment Type (1=Line,2=H,3=V,4=Q,5=C,6=T,7=S,8=A): ", 1, 1, 8, false)) { free(points); return; }
+        printf(BLUE"\n------------- Segment %d -------------\n"RESET, i);
+        printf(WHITE
+        "╭────────────────────────────────────────╮\n"
+        "│ "RESET"Coordinate Type:                       "WHITE"│\n"
+        "│                                        "WHITE"│\n"
+        "│ "RESET"1 = Absolute                           "WHITE"│\n"
+        "│ "RESET"2 = Relative                           "WHITE"│\n"
+        "╰────────────────────────────────────────╯\n"RESET);
+        if (!ask_integer((int*)&points[i].coord_type, "• Coordinate Type: ", 1, 1, 2, false)) { free(points); return; }
+
+        printf(WHITE
+        "╭────────────────────────────────────────╮\n"
+        "│ "RESET"Segment Type:                          "WHITE"│\n"
+        "│                                        "WHITE"│\n"
+        "│ "RESET"1 = Move (M / m)                       "WHITE"│\n"
+        "│ "RESET"2 = Line (L / l)                       "WHITE"│\n"
+        "│ "RESET"3 = Horizontal Line (H / h)            "WHITE"│\n"
+        "│ "RESET"4 = Vertical Line (V / v)              "WHITE"│\n"
+        "│ "RESET"5 = Quadratic Bézier (Q / q)           "WHITE"│\n"
+        "│ "RESET"6 = Cubic Bézier (C / c)               "WHITE"│\n"
+        "│ "RESET"7 = Smooth Quadratic (T / t)           "WHITE"│\n"
+        "│ "RESET"8 = Smooth Cubic (S / s)               "WHITE"│\n"
+        "│ "RESET"9 = Arc (A / a)                        "WHITE"│\n"
+        "╰────────────────────────────────────────╯\n"RESET);
+        if (!ask_integer((int*)&points[i].type, "• Segment Type: ", 1, 1, 9, false)) { free(points); return; }
 
         switch(points[i].type) {
+            case SEGMENT_MOVE:
+                if (!ask_integer(&points[i].x, "• X (move to): ", 3, 0, 9, true)) { free(points); return; }
+                if (!ask_integer(&points[i].y, "• Y (move to): ", 3, 0, 9, true)) { free(points); return; }
+                break;
+
             case SEGMENT_LINE:
             case SEGMENT_SMOOTH_QUADRATIC:
                 if (!ask_integer(&points[i].x, "• X: ", 3, 0, 9, true)) { free(points); return; }
@@ -339,7 +373,49 @@ void ask_path(ShapeList* list) {
                 if (!ask_integer(&points[i].x, "• End X: ", 3, 0, 9, true)) { free(points); return; }
                 if (!ask_integer(&points[i].y, "• End Y: ", 3, 0, 9, true)) { free(points); return; }
                 break;
-            default: break;
+            case SEGMENT_SMOOTH_CUBIC:
+                printf(WHITE
+                "╭──────────────────────────────────────────────╮\n"
+                "│ "RESET"Reminder:                                    "WHITE"│\n"
+                "│ "RESET"First control point is mirrored automatically"WHITE"│\n"
+                "│ "RESET"from previous segment’s second control point "WHITE"│\n"
+                "╰──────────────────────────────────────────────╯\n"RESET);
+
+                if (!ask_integer(&points[i].control2.x, "• Control point 2 - X: ", 3, 0, 9, true)) { free(points); return; }
+                if (!ask_integer(&points[i].control2.y, "• Control point 2 - Y: ", 3, 0, 9, true)) { free(points); return; }
+                if (!ask_integer(&points[i].x, "• End point - X: ", 3, 0, 9, true)) { free(points); return; }
+                if (!ask_integer(&points[i].y, "• End point - Y: ", 3, 0, 9, true)) { free(points); return; }
+
+                break;
+            case SEGMENT_ARC:
+                if (!ask_integer(&points[i].radiusX, "• Radius X: ", 3, 0, 9, true)) { free(points); return; }
+                if (!ask_integer(&points[i].radiusY, "• Radius Y: ", 3, 0, 9, true)) { free(points); return; }
+                if (!ask_integer(&points[i].xAxisRotation, "• X-axis rotation (degrees): ", 3, 0, 9, true)) { free(points); return; }
+
+                printf(WHITE
+                "╭────────────────────────────────────────╮\n"
+                "│ "RESET"Large Arc Flag:                        "WHITE"│\n"
+                "│ "RESET"0 = Draw smaller arc                   "WHITE"│\n"
+                "│ "RESET"1 = Draw larger arc                    "WHITE"│\n"
+                "╰────────────────────────────────────────╯\n"RESET);
+                int tmp;
+                if (!ask_integer(&tmp, "• Large arc flag (0/1): ", 1, 0, 1, false)) { free(points); return; }
+                points[i].largeArcFlag = (tmp != 0);
+
+                printf(WHITE
+                "╭────────────────────────────────────────╮\n"
+                "│ "RESET"Sweep Flag:                            "WHITE"│\n"
+                "│ "RESET"0 = Draw counter-clockwise (⟲)         "WHITE"│\n"
+                "│ "RESET"1 = Draw clockwise (⟳)                 "WHITE"│\n"
+                "╰────────────────────────────────────────╯\n"RESET);
+                if (!ask_integer(&tmp, "• Sweep flag (0/1): ", 1, 0, 1, false)) { free(points); return; }
+                points[i].sweepFlag = (tmp != 0);       
+
+                if (!ask_integer(&points[i].x, "• End X: ", 3, 0, 9, true)) { free(points); return; }
+                if (!ask_integer(&points[i].y, "• End Y: ", 3, 0, 9, true)) { free(points); return; }
+                break;
+            default:
+                break;
         }
     }
 
@@ -348,10 +424,11 @@ void ask_path(ShapeList* list) {
     if (!ask_integer(&thickness, "• Thickness: ", 2, 0, 9, false)) { free(points); return; }
     if (!ask_scale(&scalex, &scaley)) { free(points); return; }
 
-    printf(WHITE"╭────────────────────────────────────────╮\n"
-                "│ "RESET"0 = Open path                           "WHITE"│\n"
-                "│ "RESET"1 = Closed path                         "WHITE"│\n"
-                "╰────────────────────────────────────────╯\n"RESET);
+    printf(WHITE
+    "╭────────────────────────────────────────╮\n"
+    "│ "RESET"0 = Open path                          "WHITE"│\n"
+    "│ "RESET"1 = Closed path                        "WHITE"│\n"
+    "╰────────────────────────────────────────╯\n"RESET);
     int closed_int;
     if (!ask_integer(&closed_int, "• Closed: ", 1, 0, 1, false)) { free(points); return; }
     closed = (closed_int != 0);
