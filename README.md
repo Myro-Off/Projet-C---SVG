@@ -1,6 +1,6 @@
-🎨 Creator Studio — Projet SVG en C
+# 🎨 Creator Studio — Projet SVG en C
 
-🧭 Description
+## 🧭 Description
 
 Creator Studio est un programme en C permettant de créer, éditer, regrouper et visualiser des formes géométriques — cercles, lignes, rectangles, ellipses, polygones, multiligne, chemins, etc. — via une interface conçue pour le terminal.
 
@@ -14,30 +14,30 @@ Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les
 
 ⸻
 
-⚙️ Compilation et exécution
+## ⚙️ Compilation et exécution
 
-🧩 Prérequis  
+### 🧩 Prérequis  
 -	GCC (ou tout compilateur C compatible C99 ou supérieur)  
 -	make  
 -	Un terminal compatible ANSI  
 -	bash, zsh ou shell équivalent  
 
-🔧 Compilation
+### 🔧 Compilation
 
 ▶️ Exécution
 
-./bin/projet
+`./bin/projet`
 
 🧹 Nettoyage
 
-make clean
+`make clean`
 
 
 ⸻
 
-✨ Fonctionnalités principales
+## ✨ Fonctionnalités principales
 
-🟢 Création de formes  
+### 🟢 Création de formes  
 -	Cercle  
 -	Carré  
 -	Rectangle  
@@ -47,15 +47,15 @@ make clean
 -	Multiline (ligne brisée ouverte)  
 -	Path (chemin complexe)  
 
-🟡 Édition
+### 🟡 Édition
 -	Modification des coordonnées, tailles, couleurs, etc.  
 
-🔵 Groupes
+### 🔵 Groupes
 -	Création et gestion de groupes de formes  
 -	Suppression et affichage détaillé des groupes  
 -	Édition interne sans repasser par le menu principal  
 
-🟣 Interface terminale
+### 🟣 Interface terminale
 -	Menus encadrés stylisés avec séquences ANSI  
 -	Navigation fluide au clavier  
 -	Messages de succès et d’erreur encadrés  
@@ -63,7 +63,7 @@ make clean
 
 ⸻
 
-🚧 Fonctionnalités à venir (vouée à changer)
+## 🚧 Fonctionnalités à venir (vouée à changer)
 -	Chargement de données à partir de fichiers SVG  
 -	Rotation des Formes  
 -	Opacité des Formes  
@@ -71,7 +71,7 @@ make clean
 
 ⸻
 
-🧱 Compatibilité
+## 🧱 Compatibilité
 
 - macOS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compatible avec le terminal natif
 - Linux&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Testé sur Ubuntu et Arch Linux
@@ -80,8 +80,8 @@ make clean
 
 ⸻
 
-🧑‍💻 Crédits
+## 🧑‍💻 Crédits
 
-Développé par Adam Valsan  
+Développé par **Adam Valsan**  
 Ecole Coda Dijon — Bachelor 1 Developpeur Full-Stack  
-Projet académique 2025 en langage C
+Premier Projet en langage C
