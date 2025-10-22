@@ -1,67 +1,131 @@
-# 🎨 Creator Studio — Projet SVG en C
+# Creator Studio — SVG Editor (C Terminal Project)
 
-## 🧭 Description
+## Description
 
-Creator Studio est un programme en C permettant de créer, éditer, regrouper et visualiser des formes géométriques — cercles, lignes, rectangles, ellipses, polygones, multiligne, chemins, etc. — via une interface conçue pour le terminal.
+Creator Studio is a C terminal application for creating, editing, grouping, and visualizing geometric shapes—circles, lines, rectangles, ellipses, polygons, polylines, paths, and more—directly from the terminal.
+It features a colorful, intuitive Text User Interface (TUI) for managing SVG elements without a graphical environment.
 
-Ce projet met l’accent sur la clarté visuelle, l’ergonomie textuelle et la structuration modulaire du code.
-L’objectif est d’offrir une expérience fluide et agréable, tout en restant purement en ligne de commande.
+The project emphasizes visual clarity, text-based ergonomics, and modular code structure, delivering a smooth, fully command-line experience.
 
-🖥️ Compatible macOS et Linux, avec les shells Bash, Zsh ou tout autre environnement POSIX-compatible.
+🖥️ Compatible with macOS and Linux, using Bash, Zsh, or any POSIX-compatible shell.
 
-Conçus sur VS Code, préconisez le terminal de celui-ci pour un rendu optimal.
-Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les problèmes visuels. Surtout au cas d'un nombre élevé de formes créées pour l'affichage de la liste.
+Designed for VS Code terminal, it’s recommended to use a sufficiently large width and height to avoid display issues, especially when many shapes are listed.
 
-## ⚙️ Compilation et exécution
+---
 
-### 🧩 Prérequis  
--	GCC (ou tout compilateur C compatible C99 ou supérieur)  
--	make  
--	Un terminal compatible ANSI  
--	bash, zsh ou shell équivalent  
+## Main Features
 
-### 🔧 Compilation
+### Main Menu
 
-▶️ Exécution
+The user can select from the following options::
 
-`./bin/projet`
+| Option | Action |
+|:------:|:--------|
+| (1) | Create a Shape |
+| (2) | Create a Group of Shapes |
+| (3) | Edit a Shape or a Group |
+| (4) | Delete a Shape or a Group |
+| (5) | Open the List |
+| (6) | Export to SVG |
+| (7) | Import from SVG (soon) |
+| (ENTER) | Quit program |
 
-🧹 Nettoyage
+---
 
-`make clean`
+## Available Shapes
 
-## ✨ Fonctionnalités principales
+The user can choose a shape to create from the following list:
 
-### 🟢 Création de formes  
--	Cercle  
--	Carré  
--	Rectangle  
--	Ligne  
--	Ellipse  
--	Polygone  
--	Multiline (ligne brisée ouverte)  
--	Path (chemin complexe)  
+- ●  **Circle**
+- ■  **Square**
+- ▬  **Rectangle**
+- /  **Line**
+- ⬭  **Ellipse**
+- ⬟  **Polygon**
+- ╱╲ **Multiline**
+- ┼  **Path**
 
-### 🟡 Édition
--	Modification des coordonnées, tailles, couleurs, etc.  
+---
 
-### 🔵 Groupes
--	Création et gestion de groupes de formes  
--	Suppression et affichage détaillé des groupes  
--	Édition interne sans repasser par le menu principal  
-
-### 🟣 Interface terminale
--	Menus encadrés stylisés avec séquences ANSI  
--	Navigation fluide au clavier  
--	Messages de succès et d’erreur encadrés  
--	Couleurs et symboles pour une meilleure lisibilité  
-
-## 🚧 Fonctionnalités à venir (vouée à changer)
+## Fonctionnalités à venir
 -	Chargement de données à partir de fichiers SVG  
 -	Rotation des Formes  
 -	Opacité des Formes  
 -	Meilleure gestion des formes dans l'édition d'un groupe
--	Gestion des erreurs lors de l'édition d'un élément  
+-	Gestion des erreurs lors de l'édition d'un élément
+
+---
+
+## Project Structure
+
+```
+├── Export/
+│   ├── export.c
+│   └── export.h
+├── Shapes/
+│   ├── create.c
+│   ├── create.h
+│   ├── delete.c
+│   ├── delete.h
+│   ├── edit.c
+│   ├── edit.h
+│   ├── group.c
+│   ├── group.h
+│   ├── shapes.c
+│   └── shapes.h
+├── User/
+│   ├── list.c
+│   ├── list.h
+│   ├── menu.c
+│   └──  menu.h
+├── Utils/
+│   ├── memory.c
+│   ├── memory.h
+│   ├── structures.h
+│   ├── utils.c
+│   └── utils.h
+├── bin/
+│   └── projet(exe)
+├── Makefile
+└── README.md
+```
+
+---
+
+## Installation & Compilation
+
+### Prérequis
+
+- **Compilateur GCC** (C99 ou supérieur)  
+- **make**  
+- Terminal compatible **ANSI/VT100** (pour les couleurs)  
+- OS : **macOS** ou **Linux** *(Windows via WSL)*
+
+---
+
+### Compilation
+
+- Exécution  
+
+`make build`
+
+- Nettoyage  
+
+`make clean`
+
+## Compatibilité
+	•	macOS ✅
+	•	Linux ✅ (testé sur Ubuntu & Arch)
+	•	Windows ⚠️ (via WSL)
+	•	Shells : Bash, Zsh, POSIX ✅
+
+⸻
+
+## Auteur
+
+Développé par : Adam Valsan
+École : Coda Dijon — Bachelor 1 Développeur Full-Stack
+Date : Octobre 2025 
 
 ## 🧱 Compatibilité
 
