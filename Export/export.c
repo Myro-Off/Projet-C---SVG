@@ -343,32 +343,23 @@ void export_svg_path(FILE* f, const Path* p) {
  *----------------------------------------------------------*/
 void export_svg_all(const char* filename, ShapeList* list) {
     if (!list || list->size == 0) {
-        move_cursor(19, 37);
-        printf(ORANGE"╭────────────────────────────────────────╮");
-        move_cursor(20, 35);
-        printf(    "->│ Please create a shape before exporting │");
-        move_cursor(21, 37);
-        printf(      "╰────────────────────────────────────────╯");
+        move_cursor(19, 37); printf(ORANGE"╭────────────────────────────────────────╮");
+        move_cursor(20, 35); printf(    "->│ Please create a shape before exporting │");
+        move_cursor(21, 37); printf(      "╰────────────────────────────────────────╯");
         temp_message("", 0, 2);
             return;
         }
     system("rm Export/export.svg");
 
-    move_cursor(19, 37);
-    printf(ORANGE"╭─────────────────────────────────────────────╮");
-    move_cursor(20, 35);
-    printf(    "->│                                             │");
-    move_cursor(21, 37);
-    printf(      "╰─────────────────────────────────────────────╯");
+    move_cursor(19, 37); printf(ORANGE"╭─────────────────────────────────────────────╮");
+    move_cursor(20, 35); printf(    "->│                                             │");
+    move_cursor(21, 37); printf(      "╰─────────────────────────────────────────────╯");
 
     FILE* f = fopen(filename, "w");
     if (!f) {
-        move_cursor(19, 37);
-        printf(ORANGE"╭─────────────────────────╮");
-        move_cursor(20, 35);
-        printf(    "->│ Error creating SVG file │");
-        move_cursor(21, 37);
-        printf(      "╰─────────────────────────╯");
+        move_cursor(19, 37); printf(ORANGE"╭─────────────────────────╮"); 
+        move_cursor(20, 35); printf(    "->│ Error creating SVG file │");
+        move_cursor(21, 37); printf(      "╰─────────────────────────╯");
         temp_message("", 0, 2);
         return;
     }
@@ -406,11 +397,8 @@ void export_svg_all(const char* filename, ShapeList* list) {
         draw_progress(frac);
         usleep(60000);
     }
-    move_cursor(19, 37);
-    printf(GREEN"╭─────────────────────────────────────────────╮");
-    move_cursor(20, 35);
-    printf(   "->│ SVG export completed -> %s │", filename);
-    move_cursor(21, 37);
-    printf(     "╰─────────────────────────────────────────────╯");
+    move_cursor(19, 37); printf(GREEN"╭─────────────────────────────────────────────╮");
+    move_cursor(20, 35); printf(   "->│ SVG export completed -> %s │", filename);
+    move_cursor(21, 37); printf(     "╰─────────────────────────────────────────────╯");
     temp_message("", 0, 3);
 }
