@@ -1,98 +1,89 @@
-# Editeur SVG en ligne de commande
+# 🎨 Creator Studio — Projet SVG en C
 
-## Description
-Ce projet permet de créer, éditer, sauvegarder et charger des structures graphiques similaires au format SVG via une interface en ligne de commande.
+## 🧭 Description
 
-## Compilation
+Creator Studio est un programme en C permettant de créer, éditer, regrouper et visualiser des formes géométriques — cercles, lignes, rectangles, ellipses, polygones, multiligne, chemins, etc. — via une interface conçue pour le terminal.
 
-### Commandes Makefile disponibles
+Ce projet met l’accent sur la clarté visuelle, l’ergonomie textuelle et la structuration modulaire du code.
+L’objectif est d’offrir une expérience fluide et agréable, tout en restant purement en ligne de commande.
 
-#### Compilation
-```bash
-make build    # Compile le projet
-make all      # Identique à make build
-make re       # Recompile complètement le projet (clean + build)
-```
+🖥️ Compatible macOS et Linux, avec les shells Bash, Zsh ou tout autre environnement POSIX-compatible.
 
-#### Exécution
-```bash
-make run      # Compile et exécute le programme
-./projet      # Exécute directement le programme
-```
+Conçus sur VS Code, préconisez le terminal de celui-ci pour un rendu optimal.
+Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les problèmes visuels. Surtout au cas d'un nombre élevé de formes créées pour l'affichage de la liste.
 
-#### Nettoyage
-```bash
-make clean    # Supprime l'exécutable et les fichiers objets
-make fclean   # Nettoyage complet (inclut les fichiers de backup)
-```
+⸻
 
-#### Utilitaires
-```bash
-make info     # Affiche les informations de compilation
-make check    # Vérifie la syntaxe sans compiler
-```
+## ⚙️ Compilation et exécution
 
-## Formes implémentées
+### 🧩 Prérequis  
+-	GCC (ou tout compilateur C compatible C99 ou supérieur)  
+-	make  
+-	Un terminal compatible ANSI  
+-	bash, zsh ou shell équivalent  
 
-### Formes primaires
-- ✅ **Cercle** : Centre (x, y) et rayon
-- ✅ **Carré** : Position (x, y) et côté
-- ✅ **Rectangle** : Position (x, y), largeur et hauteur ✅ **Ligne** : Points de départ (x1, y1) et d'arrivée (x2, y2)
-- ✅ **Polygone** : Tableau de points (minimum 3)
-- ✅ **Polyline** : Enchaînement de lignes (minimum 2 points)
+### 🔧 Compilation
 
-### Stylisation des formes
-Chaque forme supporte :
-- Couleur de trait
-- Couleur de fond (sauf ligne et polyline)
-- Épaisseur du trait
-- Déplacement en X et Y
-- Rotation en degrés
-- Inversion selon les axes X et Y
+▶️ Exécution
 
-### Fonctionnalités par forme
-- Création avec paramètres personnalisables
-- Affichage des propriétés
-- Modification des couleurs
-- Déplacement
-- Rotation
-- Inversion d'axes
-- Export au format SVG
-- Vérification de validité (viewport)
-- Libération mémoire propre
+`./bin/projet`
 
-## Structure du projet
+🧹 Nettoyage
 
-```
-Projet C/
-├── Makefile              # Fichier de compilation
-├── projet.c              # Programme principal
-├── README.md             # Documentation
-└── Shapes/               # Dossier des formes
-    ├── cercle.h/.c       # Implémentation du cercle
-    ├── carre.h/.c        # Implémentation du carré
-    ├── rectangle.h/.c    # Implémentation du rectangle
-    ├── ligne.h/.c        # Implémentation de la ligne
-    ├── polygone.h/.c     # Implémentation du polygone
-    └── polyline.h/.c     # Implémentation de la polyline
-```
+`make clean`
 
-## Conformité
 
-### Consignes respectées
-- ✅ Compilateur GCC
-- ✅ Standard C99 (`-std=c99`)
-- ✅ Makefile avec `make build` et `make clean`
-- ✅ Librairies natives uniquement (stdio, stdlib, string, stdbool, math)
-- ✅ Commentaires au format Javadoc
-- ✅ Code propre et organisé
-- ✅ Pas de fuite mémoire
+⸻
 
-### Cahier des charges
-- ✅ Formes primaires obligatoires implémentées
-- ✅ Stylisation complète des formes
-- ✅ Export SVG fonctionnel
-- ✅ Gestion des erreurs (vérification de validité)
+## ✨ Fonctionnalités principales
 
-## Auteur
-Adam Valsan
+### 🟢 Création de formes  
+-	Cercle  
+-	Carré  
+-	Rectangle  
+-	Ligne  
+-	Ellipse  
+-	Polygone  
+-	Multiline (ligne brisée ouverte)  
+-	Path (chemin complexe)  
+
+### 🟡 Édition
+-	Modification des coordonnées, tailles, couleurs, etc.  
+
+### 🔵 Groupes
+-	Création et gestion de groupes de formes  
+-	Suppression et affichage détaillé des groupes  
+-	Édition interne sans repasser par le menu principal  
+
+### 🟣 Interface terminale
+-	Menus encadrés stylisés avec séquences ANSI  
+-	Navigation fluide au clavier  
+-	Messages de succès et d’erreur encadrés  
+-	Couleurs et symboles pour une meilleure lisibilité  
+
+⸻
+
+## 🚧 Fonctionnalités à venir (vouée à changer)
+-	Chargement de données à partir de fichiers SVG  
+-	Rotation des Formes  
+-	Opacité des Formes  
+-   Potentielle refonte du système de groupes, en adaptant au système intégré à SVG
+-	Meilleure gestion des formes dans l'édition d'un groupe
+-	Gestion des erreurs lors de l'édition d'un élément  
+
+⸻
+
+## 🧱 Compatibilité
+
+- macOS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compatible avec le terminal natif
+- Linux&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Testé sur Ubuntu et Arch Linux
+- Windows&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⚠️&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Partiellement compatible via WSL
+- Shells&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bash, Zsh, et tout shell POSIX
+
+⸻
+
+## 🧑‍💻 Crédits
+
+Développé par **Adam Valsan**  
+Ecole Coda Dijon — Bachelor 1 Developpeur Full-Stack  
+Premier Projet en langage C

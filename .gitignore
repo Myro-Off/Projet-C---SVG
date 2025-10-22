@@ -5,10 +5,10 @@
 *.a
 *.so
 *.dll
-
+*.svg
 # --- Fichier exécutable principal ---
-creator
-creator.exe
+projet
+projet.exe
 
 # --- Dossiers de build ou temporaires ---
 /build/

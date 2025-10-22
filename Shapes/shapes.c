@@ -144,7 +144,7 @@ Path* create_path(PathPoint* points, int nb_points, const char* stroke_color, co
     Path* pa = malloc(sizeof(Path));
     if (!pa) return NULL;
 
-    pa->points = malloc(sizeof(PathPoint) * nb_points);
+    pa->points = calloc(nb_points, sizeof(PathPoint));
     if (!pa->points) {
         free(pa);
         return NULL;
