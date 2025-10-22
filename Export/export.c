@@ -10,7 +10,6 @@
 #include "structures.h"
 #include "utils.h"
 
-// Fonction pour calculer le viewport
 static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int* xmax, int* ymax) {
     if (!list || list->size == 0) {
         *xmin = 0;
@@ -105,13 +104,10 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
                 }
                 break;
             }
-            case PATH: { // Mise à jour pour le Path complet
+            case PATH: {
                 for (int i = 0; i < current->data.path->nb_points; i++) {
                     PathPoint p = current->data.path->points[i];
                     
-                    // Seuls les points finaux et les points de contrôle cubiques sont nécessaires
-                    // Les points de contrôle quadratiques (Q) sont omis pour simplifier
-                    // M, L, Q, C, S, T, A nécessitent la vérification de x et y (point final)
                     if (p.type != SEGMENT_CLOSE && p.type != SEGMENT_HORIZONTAL && p.type != SEGMENT_VERTICAL) {
                         int x = p.x;
                         int y = p.y;
@@ -121,7 +117,6 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
                         if (x > *xmax) *xmax = x;
                         if (y > *ymax) *ymax = y;
                         
-                        // C et c ont deux points de contrôle qui peuvent étendre la bounding box
                         if (p.type == SEGMENT_CUBIC_BEZIER || p.type == SEGMENT_SMOOTH_CUBIC) {
                             if (p.control1.x < *xmin) *xmin = p.control1.x;
                             if (p.control1.y < *ymin) *ymin = p.control1.y;
@@ -134,7 +129,6 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
                             if (p.control2.y > *ymax) *ymax = p.control2.y;
                         }
                     } 
-                    // Pour H/h et V/v, seul un axe est fourni.
                     else if (p.type == SEGMENT_HORIZONTAL) {
                         if (p.x < *xmin) *xmin = p.x;
                         if (p.x > *xmax) *xmax = p.x;
@@ -164,9 +158,6 @@ static void calculate_viewport(const ShapeList* list, int* xmin, int* ymin, int*
     if (*ymax < 600) *ymax = 600;
 }
 
-/*-----------------------------------------------------------
- *  Fonctions d'export spécifiques à chaque type de forme
- *----------------------------------------------------------*/
 void export_svg_circle(FILE* f, const Circle* c) {
     fprintf(f,
         "    <circle cx='%d' cy='%d' r='%d' fill='%s' stroke='%s' stroke-width='%d' transform='scale(%d, %d)'/>\n",
@@ -223,25 +214,18 @@ void export_svg_multiline(FILE* f, const Multiline* m) {
 }
 
 void export_svg_path(FILE* f, const Path* p) {
-    if (p->nb_points < 1) return; // Un path minimum a 1 point (Move)
+    if (p->nb_points < 1) return;
 
-    // Démarrage de l'attribut 'd' (Path Data)
     fprintf(f, "    <path d='");
 
     for (int i = 0; i < p->nb_points; i++) {
         PathPoint current_point = p->points[i];
-  //      char coord_char = (current_point.coord_type == COORD_ABSOLUTE) ? ' ' : ' ';
-        
-        // Détermination de la commande principale (M, L, C, S, Q, T, A, Z)
         char command;
-//        char space = (current_point.coord_type == COORD_ABSOLUTE) ? ' ' : ' ';
-        
-        // La gestion de la casse est primordiale pour SVG
         char format_str[16];
         if (current_point.coord_type == COORD_ABSOLUTE) {
-             strcpy(format_str, " %c"); // Majuscule pour absolu
+             strcpy(format_str, " %c");
         } else {
-             strcpy(format_str, " %c"); // Minuscule pour relatif
+             strcpy(format_str, " %c");
         }
 
         switch (current_point.type) {
@@ -263,14 +247,14 @@ void export_svg_path(FILE* f, const Path* p) {
                 command = 'H';
                 if (current_point.coord_type == COORD_RELATIVE) command = 'h';
                 fprintf(f, format_str, command);
-                fprintf(f, "%d", current_point.x); // Seulement X
+                fprintf(f, "%d", current_point.x);
                 break;
 
             case SEGMENT_VERTICAL:
                 command = 'V';
                 if (current_point.coord_type == COORD_RELATIVE) command = 'v';
                 fprintf(f, format_str, command);
-                fprintf(f, "%d", current_point.y); // Seulement Y
+                fprintf(f, "%d", current_point.y);
                 break;
 
             case SEGMENT_QUADRATIC_BEZIER:
@@ -287,7 +271,6 @@ void export_svg_path(FILE* f, const Path* p) {
                 command = 'C';
                 if (current_point.coord_type == COORD_RELATIVE) command = 'c';
                 fprintf(f, format_str, command);
-                // C c1x c1y, c2x c2y, x y
                 fprintf(f, "%d %d, %d %d, %d %d", 
                     current_point.control1.x, current_point.control1.y,
                     current_point.control2.x, current_point.control2.y,
@@ -306,7 +289,6 @@ void export_svg_path(FILE* f, const Path* p) {
                 command = 'S';
                 if (current_point.coord_type == COORD_RELATIVE) command = 's';
                 fprintf(f, format_str, command);
-                // S c2x c2y, x y (Seul le 2ème point de contrôle est spécifié)
                 fprintf(f, "%d %d, %d %d", 
                     current_point.control2.x, current_point.control2.y,
                     current_point.x, current_point.y);
@@ -316,7 +298,6 @@ void export_svg_path(FILE* f, const Path* p) {
                 command = 'A';
                 if (current_point.coord_type == COORD_RELATIVE) command = 'a';
                 fprintf(f, format_str, command);
-                // A rx ry x-axis-rotation large-arc-flag sweep-flag x y
                 fprintf(f, "%d %d %d %d %d %d %d", 
                     current_point.radiusX, current_point.radiusY, 
                     current_point.xAxisRotation, 
@@ -327,7 +308,7 @@ void export_svg_path(FILE* f, const Path* p) {
                 
             case SEGMENT_CLOSE:
                 command = 'Z';
-                if (current_point.coord_type == COORD_RELATIVE) command = 'z'; // Z et z sont identiques
+                if (current_point.coord_type == COORD_RELATIVE) command = 'z';
                 fprintf(f, format_str, command);
                 break;
         }
@@ -338,28 +319,35 @@ void export_svg_path(FILE* f, const Path* p) {
         p->fill_color, p->stroke_color, p->thickness, p->scalex, p->scaley
     );
 }
-/*-----------------------------------------------------------
- *  Fonction principale : export de toute la liste en SVG
- *----------------------------------------------------------*/
+
 void export_svg_all(const char* filename, ShapeList* list) {
     if (!list || list->size == 0) {
-        move_cursor(19, 37); printf(ORANGE"╭────────────────────────────────────────╮");
-        move_cursor(20, 35); printf(    "->│ Please create a shape before exporting │");
-        move_cursor(21, 37); printf(      "╰────────────────────────────────────────╯");
+        move_cursor(19, 37);
+        printf(ORANGE"╭────────────────────────────────────────╮");
+        move_cursor(20, 35);
+        printf(    "->│ Please create a shape before exporting │");
+        move_cursor(21, 37);
+        printf(      "╰────────────────────────────────────────╯");
         temp_message("", 0, 2);
             return;
         }
     system("rm Export/export.svg");
 
-    move_cursor(19, 37); printf(ORANGE"╭─────────────────────────────────────────────╮");
-    move_cursor(20, 35); printf(    "->│                                             │");
-    move_cursor(21, 37); printf(      "╰─────────────────────────────────────────────╯");
+    move_cursor(19, 37);
+    printf(ORANGE"╭─────────────────────────────────────────────╮");
+    move_cursor(20, 35);
+    printf(    "->│                                             │");
+    move_cursor(21, 37);
+    printf(      "╰─────────────────────────────────────────────╯");
 
     FILE* f = fopen(filename, "w");
     if (!f) {
-        move_cursor(19, 37); printf(ORANGE"╭─────────────────────────╮"); 
-        move_cursor(20, 35); printf(    "->│ Error creating SVG file │");
-        move_cursor(21, 37); printf(      "╰─────────────────────────╯");
+        move_cursor(19, 37);
+        printf(ORANGE"╭─────────────────────────╮");
+        move_cursor(20, 35);
+        printf(    "->│ Error creating SVG file │");
+        move_cursor(21, 37);
+        printf(      "╰─────────────────────────╯");
         temp_message("", 0, 2);
         return;
     }
@@ -390,15 +378,18 @@ void export_svg_all(const char* filename, ShapeList* list) {
     }
     fprintf(f, "</svg>\n");
     fclose(f);
-    // Progress bar
+
     const int steps = 100;
     for (int i = 0; i <= steps; ++i) {
         double frac = (double)i / steps;
         draw_progress(frac);
         usleep(60000);
     }
-    move_cursor(19, 37); printf(GREEN"╭─────────────────────────────────────────────╮");
-    move_cursor(20, 35); printf(   "->│ SVG export completed -> %s │", filename);
-    move_cursor(21, 37); printf(     "╰─────────────────────────────────────────────╯");
+    move_cursor(19, 37);
+    printf(GREEN"╭─────────────────────────────────────────────╮");
+    move_cursor(20, 35);
+    printf(   "->│ SVG export completed -> %s │", filename);
+    move_cursor(21, 37);
+    printf(     "╰─────────────────────────────────────────────╯");
     temp_message("", 0, 3);
 }
