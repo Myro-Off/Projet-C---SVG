@@ -67,7 +67,8 @@ Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les
 -	Chargement de données à partir de fichiers SVG  
 -	Rotation des Formes  
 -	Opacité des Formes  
--	Meilleure gestion des formes dans l'édition d'un groupe  
+-	Meilleure gestion des formes dans l'édition d'un groupe
+-	Gestion des erreurs lors de l'édition d'un élément  
 
 ⸻
 
