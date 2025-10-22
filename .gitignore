@@ -1,0 +1,45 @@
+# --- Fichiers binaires et objets ---
+*.o
+*.out
+*.exe
+*.a
+*.so
+*.dll
+
+# --- Fichier exécutable principal ---
+creator
+creator.exe
+
+# --- Dossiers de build ou temporaires ---
+/build/
+/bin/
+/obj/
+/temp/
+/tmp/
+
+# --- Fichiers système ---
+.DS_Store
+Thumbs.db
+
+# --- Fichiers de sauvegarde éditeur ---
+*~
+*.swp
+*.swo
+*.bak
+*.old
+
+# --- Logs ---
+*.log
+
+# --- Caches ---
+.cache/
+.vscode/
+.idea/
+
+# --- Sauvegardes utilisateur (optionnel) ---
+/saves/
+/data/
+/output/
+
+# --- Makefile artifacts ---
+*.dSYM/
