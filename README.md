@@ -16,11 +16,11 @@ Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les
 
 ⚙️ Compilation et exécution
 
-🧩 Prérequis
-	-	GCC (ou tout compilateur C compatible C99 ou supérieur)
-	-	make
-	-	Un terminal compatible ANSI
-	-	bash, zsh ou shell équivalent
+🧩 Prérequis  
+-	GCC (ou tout compilateur C compatible C99 ou supérieur)  
+-	make  
+-	Un terminal compatible ANSI  
+-	bash, zsh ou shell équivalent  
 
 🔧 Compilation
 
@@ -37,54 +37,51 @@ make clean
 
 ✨ Fonctionnalités principales
 
-🟢 Création de formes
-	-	Cercle
-	-	Carré
-	-	Rectangle
-	-	Ligne
-	-	Ellipse
-	-	Polygone
-	-	Multiline (ligne brisée ouverte)
-	-	Path (chemin complexe)
+🟢 Création de formes  
+-	Cercle  
+-	Carré  
+-	Rectangle  
+-	Ligne  
+-	Ellipse  
+-	Polygone  
+-	Multiline (ligne brisée ouverte)  
+-	Path (chemin complexe)  
 
 🟡 Édition
-	-	Modification des coordonnées, tailles, couleurs, etc.
+-	Modification des coordonnées, tailles, couleurs, etc.  
 
 🔵 Groupes
-	-	Création et gestion de groupes de formes
-	-	Suppression et affichage détaillé des groupes
-	-	Édition interne sans repasser par le menu principal
+-	Création et gestion de groupes de formes  
+-	Suppression et affichage détaillé des groupes  
+-	Édition interne sans repasser par le menu principal  
 
 🟣 Interface terminale
-	-	Menus encadrés stylisés avec séquences ANSI
-	-	Navigation fluide au clavier
-	-	Messages de succès et d’erreur encadrés
-	-	Couleurs et symboles pour une meilleure lisibilité
+-	Menus encadrés stylisés avec séquences ANSI  
+-	Navigation fluide au clavier  
+-	Messages de succès et d’erreur encadrés  
+-	Couleurs et symboles pour une meilleure lisibilité  
 
 ⸻
 
 🚧 Fonctionnalités à venir (vouée à changer)
-	-	Chargement de données à partir de fichiers SVG
-    -	Rotation des Formes
-    -	Opacité des Formes
-    -	Meilleure gestion des formes dans l'édition d'un groupe
+-	Chargement de données à partir de fichiers SVG  
+-	Rotation des Formes  
+-	Opacité des Formes  
+-	Meilleure gestion des formes dans l'édition d'un groupe  
 
 ⸻
 
 🧱 Compatibilité
 
-Environnement	Supporté	         Détails
-
-macOS	          ✅	    Compatible avec le terminal natif
-Linux	          ✅	    Testé sur Ubuntu et Arch Linux
-Windows	          ⚠️	    Partiellement compatible via WSL
-Shells	          ✅	    Bash, Zsh, et tout shell POSIX
-
+- macOS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compatible avec le terminal natif
+- Linux&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Testé sur Ubuntu et Arch Linux
+- Windows&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⚠️&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Partiellement compatible via WSL
+- Shells&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bash, Zsh, et tout shell POSIX
 
 ⸻
 
 🧑‍💻 Crédits
 
-Développé par Adam Valsan
-Ecole Coda Dijon — Bachelor 1 Developpeur Full-Stack
+Développé par Adam Valsan  
+Ecole Coda Dijon — Bachelor 1 Developpeur Full-Stack  
 Projet académique 2025 en langage C
