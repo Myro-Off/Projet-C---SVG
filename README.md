@@ -12,8 +12,6 @@ L’objectif est d’offrir une expérience fluide et agréable, tout en restant
 Conçus sur VS Code, préconisez le terminal de celui-ci pour un rendu optimal.
 Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les problèmes visuels. Surtout au cas d'un nombre élevé de formes créées pour l'affichage de la liste.
 
-⸻
-
 ## ⚙️ Compilation et exécution
 
 ### 🧩 Prérequis  
@@ -31,9 +29,6 @@ Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les
 🧹 Nettoyage
 
 `make clean`
-
-
-⸻
 
 ## ✨ Fonctionnalités principales
 
@@ -61,17 +56,12 @@ Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les
 -	Messages de succès et d’erreur encadrés  
 -	Couleurs et symboles pour une meilleure lisibilité  
 
-⸻
-
 ## 🚧 Fonctionnalités à venir (vouée à changer)
 -	Chargement de données à partir de fichiers SVG  
 -	Rotation des Formes  
 -	Opacité des Formes  
--   Potentielle refonte du système de groupes, en adaptant au système intégré à SVG
 -	Meilleure gestion des formes dans l'édition d'un groupe
 -	Gestion des erreurs lors de l'édition d'un élément  
-
-⸻
 
 ## 🧱 Compatibilité
 
@@ -79,8 +69,6 @@ Prévoyez une largeur et une hauteur d'affichage plutôt grande pour éviter les
 - Linux&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Testé sur Ubuntu et Arch Linux
 - Windows&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⚠️&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Partiellement compatible via WSL
 - Shells&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✅&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bash, Zsh, et tout shell POSIX
-
-⸻
 
 ## 🧑‍💻 Crédits
 
